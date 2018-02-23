@@ -1,18 +1,38 @@
-﻿#$disks = Get-AzureRmDisk -ResourceGroupName "wg-ubuntu"
+﻿$rg = ""
+$csvfile = "VMandDisks.csv"
+$vmobjs = @()
+Get-AzureRmDisk <#-ResourceGroupName $rg #> | ForEach-Object {
+    
+    #Write-Host $_.Name : $_.ManagedBy.Split('/')[8] : $_.DiskSizeGB 
 
-#foreach($disk in $disks)
-{
- #   Write-Host $disk.Type $disk.DiskSizeGB    
+    $vmDiskInfo = [pscustomobject]@{
+                
+        'VM'=$_.ManagedBy.Split('/')[8]
+        'ResourceGroupName' = $_.ResourceGroupName
+        'Location' = $_.Location
+        'DiskName' = $_.Name
+        'DiskSize' = $_.DiskSizeGB
+        'OSType'   = $_.OsType                
+    }       
+    
+    $vmobjs += $vmDiskInfo
 }
 
-$vms = Get-AzureRmVM -ResourceGroupName "wg-ubuntu"
+#Save to CSV
+$vmobjs | Export-Csv -NoTypeInformation -Path $csvfile
+Invoke-Item $csvfile
+
+#Disk from VM 
+$vms = Get-AzureRmVM #-ResourceGroupName $rg
 
 foreach($vm in $vms){
-
-    Write-Host $vm.StorageProfile.OsDisk.Vhd.Uri.Split('/')
-    $arr = $vm.StorageProfile.OsDisk.Vhd.Uri.Split('/')
-   
-    foreach($datadisk in $vm.StorageProfile.DataDisks){
-        Write-Host $datadisk
-    }    
+    #OS Disk
+    Write-Host $vm.StorageProfile.OsDisk.Name : $vm.Name
+    
+    #Loop through all the data disks
+    $ddisks = $vm.StorageProfile.DataDisks 
+    foreach($ddisk in $ddisks){
+        Write-Host $ddisk.Name : $vm.Name
+    }
+    
 }
