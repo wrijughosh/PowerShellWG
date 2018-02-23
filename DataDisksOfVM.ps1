@@ -19,8 +19,8 @@ Get-AzureRmDisk <#-ResourceGroupName $rg #> | ForEach-Object {
 }
 
 #Save to CSV
-$vmobjs | Export-Csv -NoTypeInformation -Path $csvfile
-Invoke-Item $csvfile
+#$vmobjs | Export-Csv -NoTypeInformation -Path $csvfile
+#Invoke-Item $csvfile
 
 #Disk from VM 
 $vms = Get-AzureRmVM #-ResourceGroupName $rg
@@ -32,7 +32,7 @@ foreach($vm in $vms){
     #Loop through all the data disks
     $ddisks = $vm.StorageProfile.DataDisks 
     foreach($ddisk in $ddisks){
-        Write-Host $ddisk.Name : $vm.Name
+        Write-Host $ddisk.Name : $vm.Name : $ddisk.DiskSizeGB
     }
     
 }

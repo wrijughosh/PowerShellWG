@@ -1,11 +1,23 @@
-﻿#===================================================
+﻿<#
+===================================================
+Get the list of VMs under a single subscription 
+ 
+By      : Wriju Ghosh 
+Created : 22-Feb-2018
+Created : 23-Feb-2018
 
-# GET THE PRIVATE IP Addresses of VMs
+Get the PRIVATE IP Addresses of VMs
+Get Disks of the VM (so far only 6 considered)
 
-#===================================================
-#Add-AzureRmAccount
-$rgs = Get-AzureRmResourceGroup  
+===================================================
+#>
 
+Add-AzureRmAccount
+ 
+$file = "AllVM1s.csv"
+$vmobjs = @()
+
+$rgs = Get-AzureRmResourceGroup 
 foreach ($rg in $rgs)
 {
     $rgName = $rg.ResourceGroupName
@@ -19,40 +31,43 @@ foreach ($rg in $rgs)
         $vm = $vms | where-object -Property Id -EQ $nic.VirtualMachine.id
         $prv =  $nic.IpConfigurations | select-object -ExpandProperty PrivateIpAddress
         
-        Write-Host $vm.Name : `
-                   $prv : `
-                   $rgName : `
-                   $vm.Location : `
-                   $vm.HardwareProfile.VmSize : `
-                   $vm.StorageProfile.ImageReference.Sku : `
-                   $vm.StorageProfile.ImageReference.Offer : `
-                   $vm.StorageProfile.DataDisks.Count : `
-                   $vm.StorageProfile.DataDisks.Capacity
 
-        #$vmInfo = [pscustomobject]@{
-        #    'Mode'              ='ARM'
-        #    'Name'              = $vm.Name
-        #    'PrivateIP'         = $prv
-        #    'ResourceGroupName' = $vm.ResourceGroupName
-        #    'Location'          = $vm.Location
-            #'VMSize'            = $vm.HardwareProfile.VMSize
-            #'Status'            = $null
-            #'ImageSKU'          = $vm.StorageProfile.ImageReference.Sku
-            #'OS'                = $vm.StorageProfile.ImageReference.Offer
-        #}
-        
-        #$vms | where Name -EQ $vm | select Statuses[1].DisplayStatus
+        $vmInfo = [PSCustomObject]@{
+            'Mode'              ='ARM'
+            'Name'              = $vm.Name
+            'PrivateIP'         = $prv
+            'ResourceGroupName' = $vm.ResourceGroupName
+            'Location'          = $vm.Location
+            'VMSize'            = $vm.HardwareProfile.VMSize
+            'ImageSKU'          = $vm.StorageProfile.ImageReference.Sku
+            'OS'                = $vm.StorageProfile.ImageReference.Offer
+
+            'Disk1'             = $vm.StorageProfile.DataDisks[0].Name
+            'Disk1Size'         = $vm.StorageProfile.DataDisks[0].DiskSizeGB
             
-        #$vmStatus = $vm | Get-AzureRmVM -Status
-        #$vmInfo.Status = $vmStatus.Statuses[1].DisplayStatus
+            'Disk2'             = $vm.StorageProfile.DataDisks[1].Name
+            'Disk2Size'         = $vm.StorageProfile.DataDisks[1].DiskSizeGB
+            
+            'Disk3'             = $vm.StorageProfile.DataDisks[2].Name
+            'Disk3Size'         = $vm.StorageProfile.DataDisks[2].DiskSizeGB
+            
+            'Disk4'             = $vm.StorageProfile.DataDisks[3].Name
+            'Disk4Size'         = $vm.StorageProfile.DataDisks[3].DiskSizeGB
 
-        #$vmobjs += $vmInfo
-        #Write-Host "."        
+            'Disk5'             = $vm.StorageProfile.DataDisks[4].Name
+            'Disk5Size'         = $vm.StorageProfile.DataDisks[4].DiskSizeGB
+
+            'Disk6'             = $vm.StorageProfile.DataDisks[6].Name
+            'Disk6Size'         = $vm.StorageProfile.DataDisks[6].DiskSizeGB            
+        }
+                
+        $vmobjs += $vmInfo        
     }  
 }
 
-$file = "C:\temp\All_VM.csv"
-#$vmobjs | Export-Csv -NoTypeInformation -Path $file -f
-#Write-Host "VM list written to $file"
 
-#Invoke-Item $file 
+$vmobjs | Export-Csv -NoTypeInformation -Path $file -f
+Invoke-Item $file 
+Write-Host "VM list written to $file"
+
+Invoke-Item $file 
