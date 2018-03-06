@@ -57,8 +57,8 @@ foreach ($rg in $rgs)
             'Disk5'             = $vm.StorageProfile.DataDisks[4].Name
             'Disk5Size'         = $vm.StorageProfile.DataDisks[4].DiskSizeGB
 
-            'Disk6'             = $vm.StorageProfile.DataDisks[6].Name
-            'Disk6Size'         = $vm.StorageProfile.DataDisks[6].DiskSizeGB            
+            'Disk6'             = $vm.StorageProfile.DataDisks[5].Name
+            'Disk6Size'         = $vm.StorageProfile.DataDisks[5].DiskSizeGB            
         }
                 
         $vmobjs += $vmInfo        
