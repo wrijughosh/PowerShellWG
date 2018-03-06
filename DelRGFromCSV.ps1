@@ -20,7 +20,7 @@ Import-Csv $CsvFilePath | ForEach-Object {
     $subId = $_.SubscriptionId
     $rg = $_.RGName
 
-    Write-Host "Deleting the Resource Group : " + $rg -ForegroundColor Yellow
+    Write-Host "Deleting the Resource Group : " $rg -ForegroundColor Yellow -BackgroundColor Gray
     
     #Calling another PS1 and passing the parameters
     $command = “D:\GithubProj\PowerShellWG\DeleteAllResourcesInRG_exceptRG.ps1 -SubscriptionId $subId -ResourceGroupName $rg"
