@@ -1,11 +1,14 @@
 ﻿<#
-Move the MANAGED VM to an Availability Set 
-Previously not having any Availability Set
+==================================================
+Adds an existing MANAGED VM to an Availability Set
+Compiled by: Wriju Ghosh
+Created On : 13-March-2018
+==================================================
 #>
 
 #set variables
-$rg = "wg-delete"
-$vmName = "wg-delete"
+$rg = "wg-delete1"
+$vmName = "wg-delete1"
 $newAvailSetName = "myAvailabilitySet"
 $outFile = "C:\temp\outfile.txt"
 
@@ -31,7 +34,7 @@ $OriginalVM.StorageProfile.OsDisk.OsType | Out-File -FilePath $outFile -Append
 
 "OS Disk: " | Out-File -FilePath $outFile -Append
 #$OriginalVM.StorageProfile.OsDisk.Vhd.Uri | Out-File -FilePath $outFile -Append #for unmanaged
-    
+   
 
 if ($OriginalVM.StorageProfile.DataDisks) {
     "Data Disk(s): " | Out-File -FilePath $outFile -Append
@@ -46,7 +49,7 @@ Write-Host "Create new availability set if it does not exist" -BackgroundColor Y
 #Create new availability set if it does not exist
 $availSet = Get-AzureRmAvailabilitySet -ResourceGroupName $rg -Name $newAvailSetName -ErrorAction Ignore
 if (-Not $availSet) {
-    #$availset = New-AzureRmAvailabilitySet -ResourceGroupName $rg -Name $newAvailSetName -Location $OriginalVM.Location
+    #$availset = New-AzureRmAvailabilitySet -ResourceGroupName $rg -Name $newAvailSetName -Location $OriginalVM.Location #this is for unmanaged disks
     $availset = New-AzureRmAvailabilitySet -ResourceGroupName $rg -Name $newAvailSetName -Location $OriginalVM.Location -Sku aligned -PlatformFaultDomainCount 2 -PlatformUpdateDomainCount 2
 }
 

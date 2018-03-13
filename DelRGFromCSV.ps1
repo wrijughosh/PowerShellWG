@@ -8,8 +8,10 @@ param(
 )
 
 <#
-The format of the CVS file would look likem
-SunbscriptionId, RGName
+The format of the CVS file would look like
+
+SubscriptionId, RGName
+--------------  ------
 #>
 
 #Assuming that the file exists without any doubt
