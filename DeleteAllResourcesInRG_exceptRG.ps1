@@ -1,14 +1,14 @@
 ﻿param(
-  [Parameter(Position = 0, Mandatory = $true)]
+  <#[Parameter(Position = 0, Mandatory = $true)]
   [string]
-  $SubscriptionId,
+  $SubscriptionId,#>
 
   [Parameter(Position = 1, Mandatory = $true)]
   [string]
   $ResourceGroupName
 )
 
-$null = Set-AzureRmContext -SubscriptionId $SubscriptionId
+#$null = Set-AzureRmContext -SubscriptionId $SubscriptionId
 
 @(
   'Microsoft.Compute/virtualMachineScaleSets'
@@ -21,7 +21,7 @@ $null = Set-AzureRmContext -SubscriptionId $SubscriptionId
   'Microsoft.Network/publicIPAddresses'
   'Microsoft.Network/networkSecurityGroups'
   'Microsoft.Network/virtualNetworks'
-
+  'Microsoft.Compute/disks'
   '*' # remaining
 ) | % {
   $params = @{

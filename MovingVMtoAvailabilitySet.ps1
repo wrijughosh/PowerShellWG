@@ -7,9 +7,23 @@ Created On : 13-March-2018
 #>
 
 #set variables
-$rg = "wg-delete1"
-$vmName = "wg-delete1"
-$newAvailSetName = "myAvailabilitySet"
+param(
+  [Parameter(Position = 0, Mandatory = $true)]
+  [string]
+  $rg,
+
+  [Parameter(Position = 1, Mandatory = $true)]
+  [string]
+  $vmName,
+
+  [Parameter(Position = 1, Mandatory = $true)]
+  [string]
+  $newAvailSetName
+)
+#$rg = "rg-lb"
+#$vmName = "wgserver3"
+#$newAvailSetName = "LBAvailabilitySet2"
+
 $outFile = "C:\temp\outfile.txt"
 
 #Get VM Details
@@ -58,15 +72,19 @@ Write-Host "Creating the VM (managed disk) with Availability Set" -BackgroundCol
 $newVM = New-AzureRmVMConfig -VMName $OriginalVM.Name -VMSize $OriginalVM.HardwareProfile.VmSize -AvailabilitySetId $availSet.Id
 Set-AzureRmVMOSDisk -VM $NewVM -ManagedDiskId $OriginalVM.StorageProfile.OsDisk.ManagedDisk.Id -CreateOption Attach -Windows
 
-#Add Data Disks
+#Add Data Disks (Managed)
 foreach ($disk in $OriginalVM.StorageProfile.DataDisks ) { 
-    Add-AzureRmVMDataDisk -VM $newVM -Name $disk.Name -VhdUri $disk.Vhd.Uri -Caching $disk.Caching -Lun $disk.Lun -CreateOption Attach -DiskSizeInGB $disk.DiskSizeGB
+    # Add-AzureRmVMDataDisk -VM $newVM -Name $disk.Name -VhdUri $disk.Vhd.Uri -Caching $disk.Caching -Lun $disk.Lun -CreateOption Attach -DiskSizeInGB $disk.DiskSizeGB #UnManaged 
+    Add-AzureRmVMDataDisk -VM $newVM -Name $disk.Name -ManagedDiskId $disk.ManagedDisk.Id -Caching $disk.Caching -Lun $disk.Lun -CreateOption Attach -DiskSizeInGB $disk.DiskSizeGB #Managed
 }
 
 #Add NIC(s)
 foreach ($nic in $OriginalVM.NetworkProfile.NetworkInterfaces) {
     Add-AzureRmVMNetworkInterface -VM $NewVM -Id $nic.Id
 }
+
+#Disable Boot diagnostic (very important***)
+$NewVM = Set-AzureRmVMBootDiagnostics -VM $NewVM -disable
 
 #Create the VM
 New-AzureRmVM -ResourceGroupName $rg -Location $OriginalVM.Location -VM $NewVM -DisableBginfoExtension
