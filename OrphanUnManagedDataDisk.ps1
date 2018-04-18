@@ -70,8 +70,4 @@ $data | Export-Csv -Path $file -NoTypeInformation -Force
 
 Invoke-Item $file
 
-Write-Host "Complete writing to the file " + $file$data | Export-Csv -Path $file -NoTypeInformation -Force
-
-Invoke-Item $file
-
 Write-Host "Complete writing to the file " + $file
