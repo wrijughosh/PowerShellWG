@@ -42,6 +42,8 @@ foreach ($rg in $rgs)
             'ImageSKU'          = $vm.StorageProfile.ImageReference.Sku
             'OS'                = $vm.StorageProfile.ImageReference.Offer
 
+            'OSDisk'            = $vm.StorageProfile.OsDisk.DiskSizeGB
+
             'Disk1'             = $vm.StorageProfile.DataDisks[0].Name
             'Disk1Size'         = $vm.StorageProfile.DataDisks[0].DiskSizeGB
             
@@ -57,8 +59,8 @@ foreach ($rg in $rgs)
             'Disk5'             = $vm.StorageProfile.DataDisks[4].Name
             'Disk5Size'         = $vm.StorageProfile.DataDisks[4].DiskSizeGB
 
-            'Disk6'             = $vm.StorageProfile.DataDisks[6].Name
-            'Disk6Size'         = $vm.StorageProfile.DataDisks[6].DiskSizeGB            
+            'Disk6'             = $vm.StorageProfile.DataDisks[5].Name
+            'Disk6Size'         = $vm.StorageProfile.DataDisks[5].DiskSizeGB            
         }
                 
         $vmobjs += $vmInfo        

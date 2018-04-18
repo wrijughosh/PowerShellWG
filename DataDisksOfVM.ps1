@@ -27,12 +27,12 @@ $vms = Get-AzureRmVM #-ResourceGroupName $rg
 
 foreach($vm in $vms){
     #OS Disk
-    Write-Host $vm.StorageProfile.OsDisk.Name : $vm.Name
+    Write-Host "OS Disk: " $vm.StorageProfile.OsDisk.Name " of VM : " $vm.Name
     
     #Loop through all the data disks
     $ddisks = $vm.StorageProfile.DataDisks 
     foreach($ddisk in $ddisks){
-        Write-Host $ddisk.Name : $vm.Name : $ddisk.DiskSizeGB
+        Write-Host "         " $ddisk.Name : $vm.Name : $ddisk.DiskSizeGB
     }
     
 }
