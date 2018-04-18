@@ -30,7 +30,7 @@ foreach($storageAccount in $storageAccounts){
         #Fetch all the Page blobs with extension .vhd as only Page blobs can be attached as disk to Azure VMs
         $blobs | Where-Object {$_.BlobType -eq 'PageBlob' -and $_.Name.EndsWith('.vhd')} | ForEach-Object { 
 
-        Write-Host $_.Name $_.ICloudBlob.Properties.LeaseStatus 
+        #Write-Host $_.Name $_.ICloudBlob.Properties.LeaseStatus 
 
         $obj = New-Object PSObject
 
