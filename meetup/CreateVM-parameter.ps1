@@ -30,4 +30,7 @@ else
 }
 
 #then create the VM
-New-AzureRmVM -Name $VMName -ResourceGroupName $RGName -Location $location -Size $vmSize 
+New-AzureRmVM -Name $VMName -ResourceGroupName $RGName `
+    -Location $location -Size $vmSize 
+
+
