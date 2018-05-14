@@ -47,4 +47,5 @@ Import-Csv $file | ForEach-Object {
     Write-Host $script
 }
 
+#File will be downloaded to C:\users\blahblah\ [you can change this as well.] 
 
