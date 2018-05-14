@@ -10,7 +10,7 @@ Disclaimer: Please test before you use in your subscription.
 #>
 
 
-Add-AzureRmAccount
+#Add-AzureRmAccount
 $file = "orphan-managed-disk.csv"
 $data = @() 
 
@@ -26,7 +26,7 @@ foreach($disk in $MVHD){
     $obj | Add-Member NoteProperty Name           $disk.Name
     $obj | Add-Member NoteProperty Location       $disk.Location
     $obj | Add-Member NoteProperty DiskSize       $disk.DiskSizeGB
-    $obj | Add-Member NoteProperty VM             $disk.ManagedBy.Split("/")[8]
+    $obj | Add-Member NoteProperty VM             $disk.ManagedBy
     $obj | Add-Member NoteProperty ResourceGroup  $disk.ResourceGroupName
     $obj | Add-Member NoteProperty CreatedOn      $disk.TimeCreated
     $obj | Add-Member NoteProperty OS             $disk.OsType
