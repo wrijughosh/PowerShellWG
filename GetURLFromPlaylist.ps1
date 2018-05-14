@@ -6,7 +6,7 @@ $file = "url-list.csv"
 $playlist = ((Invoke-WebRequest $playlistURL).Links | Where {$_.class -match "playlist-video"}).href 
 
 $arrURLs = @()
-#$arrURLs = "URL"
+
 ForEach ($video in $Playlist) {
 
 	$s = "https://www.youtube.com"+ $video
@@ -42,10 +42,14 @@ Then the command would look like,
 #PART 2: Read from CSV and download...
 $ydlPath = "C:\users\blahblah\downloads\youtube-dl.exe"
 Import-Csv $file | ForEach-Object {      
-    $script = $ydlPath + " " + $_.URL
+    $script = $ydlPath + " " + $_.URL + " -o ""E:\build2018\%(title)s-%(id)s.%(ext)s"""
     Invoke-Expression $script
     Write-Host $script
 }
 
-#File will be downloaded to C:\users\blahblah\ [you can change this as well.] 
+# 
+
+#To point the file to a specific directory use the below switch at the end of the command
+
+# -o "E:\build2018\%(title)s-%(id)s.%(ext)s"
 
