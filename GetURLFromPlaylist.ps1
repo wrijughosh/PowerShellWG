@@ -26,30 +26,3 @@ $arrURLs | Export-Csv -Path $file -NoTypeInformation -Force
 #Invoke-Item $file #to Open
 Write-Host "Complete writing to the file " $file
 
-<#Then read from the Same CSV to download those URLs
-
-To Download we can use 
-https://rg3.github.io/youtube-dl/download.html
-
-Simple commad would be 
-
-Let's say you have downloaded it to C:\Downloads\youtube-dl.exe
-Then the command would look like, 
-
-> youtube-dl.exe "https://www.youtube.com/watch?v=t1iaFY66bDY"
-#>
-
-#PART 2: Read from CSV and download...
-$ydlPath = "C:\users\blahblah\downloads\youtube-dl.exe"
-Import-Csv $file | ForEach-Object {      
-    $script = $ydlPath + " " + $_.URL + " -o ""E:\build2018\%(title)s-%(id)s.%(ext)s"""
-    Invoke-Expression $script
-    Write-Host $script
-}
-
-# 
-
-#To point the file to a specific directory use the below switch at the end of the command
-
-# -o "E:\build2018\%(title)s-%(id)s.%(ext)s"
-
