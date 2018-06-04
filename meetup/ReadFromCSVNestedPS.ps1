@@ -1,6 +1,6 @@
 ﻿
 #Read from CSV
-Import-Csv D:\GithubProj\PowerShellWG\meetup\VM-Input.csv |`
+Import-Csv D:\GithubProj\PowerShellWG\meetup\VM-Input2.csv |`
     ForEach-Object {       
         
         Write-Host $_.VMName, $_.RGName, $_.Location
